@@ -1,0 +1,61 @@
+Write a program to implement Factorial program using iterative and recursive method.
+
+// 1.1 Using iterative method
+#include <stdio.h>
+
+unsigned long long int factorial_iterative(int n) {
+    unsigned long long int result = 1;
+    for (int i = 1; i <= n; i++) {
+        result = result*i;
+    }
+    return result;
+}
+
+int main() {
+    int number;
+    printf("Enter a number to calculate its factorial: ");
+    scanf("%d", &number);
+
+    if (number < 0) {
+        printf("Factorial is not defined for negative numbers.\n");
+        return 1;
+    }
+
+    unsigned long long int result_iterative = factorial_iterative(number);
+
+    printf("Factorial of %d (iterative): %llu\n", number, result_iterative);
+
+    return 0;
+}
+
+
+// 1.2 Using recursive method
+#include <stdio.h>
+
+// Function to calculate factorial using recursion
+unsigned long long int factorial_recursive(int n) {
+    if (n == 0 || n == 1) {
+        return 1;
+    }
+    return n * factorial_recursive(n - 1);
+}
+
+int main() {
+    int number;
+    printf("Enter a number to calculate its factorial: ");
+    scanf("%d", &number);
+
+    if (number < 0) {
+        printf("Factorial is not defined for negative numbers.\n");
+        return 1;
+    }
+
+    unsigned long long int result_recursive = factorial_recursive(number);
+
+    // Output result
+    printf("Factorial of %d (recursive): %llu\n", number, result_recursive);
+
+    return 0;
+}
+
+Thank you to visite our github page.
