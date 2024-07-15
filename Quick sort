@@ -1,0 +1,62 @@
+//Practical NO:[14]
+//Quick Sort
+#include<stdio.h>
+#include<conio.h>
+#define MAX 100
+
+
+
+void Quick_Sort(int A[],int low,int high){
+    int pos;
+    if(low<high){
+        pos=Partition(A,low,high);
+        Quick_Sort(A,low,pos-1);
+        Quick_Sort(A,pos+1,high);
+    }
+}
+
+
+int Partition(int A[],int low,int high)
+{
+      int i,j,temp,pivot;
+      pivot=low;
+      i=low;
+      j=high;
+      while(i<j){
+            while(A[i]<=A[pivot] && i<high)
+                    i++;
+            while(A[j]>A[pivot] && j>low)
+                    j--;
+            if(i<j){
+                temp=A[i];
+                A[i]=A[j];
+                A[j]=temp;
+            }
+      }
+       temp=A[pivot];
+       A[pivot]=A[j];
+       A[j]=temp;
+       return j;
+}
+
+
+void main()
+{
+      int i,A[MAX],n;
+      printf("\nEnter the Length of Array:=> ");
+      scanf("%d",&n);
+      printf("\nEnter Elements of Array:\n");
+      for(i=0;i<n;i++)
+      {
+	    printf("\nA[%d]= ",i);
+	    scanf("%d",&A[i]);
+      }
+      
+      Quick_Sort(A,0,n-1);
+      
+	  printf("\n\n\n\nSorted List:\n");
+      printf("-----------\n");
+      for(i=0;i<n;i++)
+	    printf("%d  ",A[i]);
+      printf("\n");
+}
