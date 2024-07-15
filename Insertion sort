@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+void insertion_sort(int arr[], int n) {
+    int i, key, j;
+    for (i = 1; i < n; i++) {
+        key = arr[i];  // Store the current element as the key
+        j = i - 1;       // Initialize index for shifting elements
+
+        // Move elements of arr[0..i-1], that are greater than key, to one position ahead of their current position
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;  // Insert the key at its correct position
+    }
+}
+
+int main() {
+    int array[100], search, i, n;
+
+    printf("\nEnter the Length of Array:=> ");
+    scanf("%d", &n);
+    printf("\nEnter Elements of Array:\n");
+
+    for (i = 0; i < n; i++) {
+        printf("\nA[%d]= ", i);
+        scanf("%d", &array[i]);
+    }
+
+    insertion_sort(array, n);
+
+    printf("\nSorted Array: ");
+    for (i = 0; i < n; i++) {
+        printf("%d ", array[i]);
+    }
+
+    return 0;
+}
