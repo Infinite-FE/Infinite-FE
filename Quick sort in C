@@ -1,62 +1,59 @@
-//Practical NO:[14]
-//Quick Sort
-#include<stdio.h>
-#include<conio.h>
-#define MAX 100
+#include <stdio.h>
 
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
 
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];  // Choose the last element as the pivot
+    int i = (low - 1);        // Index of smaller element
 
-void Quick_Sort(int A[],int low,int high){
-    int pos;
-    if(low<high){
-        pos=Partition(A,low,high);
-        Quick_Sort(A,low,pos-1);
-        Quick_Sort(A,pos+1,high);
+    for (int j = low; j <= high - 1; j++) {
+        // Check if current element is smaller than the pivot
+        if (arr[j] < pivot) {
+            i++;    // Increment index of smaller element
+            swap(&arr[i], &arr[j]);  // Swap current element with the smaller element
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);  // Swap the pivot with the element at i+1
+    return (i + 1);
+}
+
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        // pi is partitioning index, arr[p] is now at right place
+        int pi = partition(arr, low, high);
+
+        // Recursively sort elements before and after partition
+        quickSort(arr, low, pi - 1);  // Left subarray
+        quickSort(arr, pi + 1, high); // Right subarray
     }
 }
 
+int main() {
+    printf("Name: Mahmadbnaim Kadivar\n");
+    printf("Enrollment no.: 92310103056\n");
 
-int Partition(int A[],int low,int high)
-{
-      int i,j,temp,pivot;
-      pivot=low;
-      i=low;
-      j=high;
-      while(i<j){
-            while(A[i]<=A[pivot] && i<high)
-                    i++;
-            while(A[j]>A[pivot] && j>low)
-                    j--;
-            if(i<j){
-                temp=A[i];
-                A[i]=A[j];
-                A[j]=temp;
-            }
-      }
-       temp=A[pivot];
-       A[pivot]=A[j];
-       A[j]=temp;
-       return j;
-}
+    int arr[100], n, i;
 
+    printf("Enter the Length of Array:=> ");
+    scanf("%d", &n);
 
-void main()
-{
-      int i,A[MAX],n;
-      printf("\nEnter the Length of Array:=> ");
-      scanf("%d",&n);
-      printf("\nEnter Elements of Array:\n");
-      for(i=0;i<n;i++)
-      {
-	    printf("\nA[%d]= ",i);
-	    scanf("%d",&A[i]);
-      }
-      
-      Quick_Sort(A,0,n-1);
-      
-	  printf("\n\n\n\nSorted List:\n");
-      printf("-----------\n");
-      for(i=0;i<n;i++)
-	    printf("%d  ",A[i]);
-      printf("\n");
+    printf("Enter Elements of Array:\n");
+    for (i = 0; i < n; i++) {
+        printf("A[%d]= ", i);
+        scanf("%d", &arr[i]);
+    }
+
+    quickSort(arr, 0, n - 1);  // Sort the entire array
+
+    printf("Sorted Array: ");
+    for (i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+
+    printf("\n");
+    return 0;
 }
