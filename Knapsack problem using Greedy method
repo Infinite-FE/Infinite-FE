@@ -1,0 +1,70 @@
+#include <stdio.h>
+
+struct Item {
+    int weight;
+    int value;
+};
+
+void swap(struct Item *a, struct Item *b) {
+    struct Item temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void sortItemsByValuePerWeight(struct Item arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            double r1 = (double)arr[j].value / arr[j].weight;
+            double r2 = (double)arr[j + 1].value / arr[j + 1].weight;
+            if (r1 < r2) {
+                swap(&arr[j], &arr[j + 1]);
+            }
+        }
+    }
+}
+
+double knapsackGreedy(struct Item arr[], int n, int W) {
+    sortItemsByValuePerWeight(arr, n);
+
+    int currentWeight = 0;
+    double totalValue = 0.0;
+
+    for (int i = 0; i < n; i++) {
+        if (currentWeight + arr[i].weight <= W) {
+            currentWeight += arr[i].weight;
+            totalValue += arr[i].value;
+        } else {
+            int remainingWeight = W - currentWeight;
+            totalValue += arr[i].value * ((double)remainingWeight / arr[i].weight);
+            break;
+        }
+    }
+
+    return totalValue;
+}
+
+int main() {
+    printf("Name: Mahmadbnaim Kadivar\n");
+    printf("Enrollment no.: 92310103056\n");
+
+    int n, W;
+
+    printf("Enter the number of items:=> ");
+    scanf("%d", &n);
+
+    struct Item arr[n];
+
+    for (int i = 0; i < n; i++) {
+        printf("Enter weight and profit of item %d: ", i + 1);
+        scanf("%d %d", &arr[i].weight, &arr[i].value);
+    }
+
+    printf("Enter the capacity of the knapsack:=> ");
+    scanf("%d", &W);
+
+    double maxValue = knapsackGreedy(arr, n, W);
+
+    printf("Maximum value in the knapsack: %.2f\n", maxValue);
+
+    return 0;
+}
