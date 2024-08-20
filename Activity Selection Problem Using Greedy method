@@ -1,0 +1,55 @@
+#include <stdio.h>
+
+struct Activity {
+    int start;
+    int end;
+};
+
+void sortActivitiesByEndTime(struct Activity arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j].end > arr[j + 1].end) {
+                struct Activity temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void activitySelection(struct Activity arr[], int n) {
+    sortActivitiesByEndTime(arr, n);
+
+    printf("Selected activities are:\n");
+
+    int i = 0;
+    printf("Activity %d (Start: %d, End: %d)\n", i + 1, arr[i].start, arr[i].end);
+
+    for (int j = 1; j < n; j++) {
+        if (arr[j].start >= arr[i].end) {
+            printf("Activity %d (Start: %d, End: %d)\n", j + 1, arr[j].start, arr[j].end);
+            i = j;
+        }
+    }
+}
+
+int main() {
+    printf("Name: Mahmadbnaim Kadivar\n");
+    printf("Enrollment no.: 92310103056\n");
+
+    int n;
+
+    printf("Enter the number of activities:=> ");
+    scanf("%d", &n);
+
+    struct Activity arr[n];
+
+    for (int i = 0; i < n; i++) {
+        printf("Enter start and end time of activity %d: ", i + 1);
+        scanf("%d %d", &arr[i].start, &arr[i].end);
+    }
+
+    activitySelection(arr, n);
+
+    return 0;
+}
