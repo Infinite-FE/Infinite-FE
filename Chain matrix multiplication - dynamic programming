@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <limits.h>
+
+// Function to implement the Matrix Chain Multiplication problem using dynamic programming
+int matrixChainOrder(int p[], int n) {
+    int m[n][n];  // m[i][j] will hold the minimum number of multiplications needed to multiply matrices i through j
+
+    // No scalar multiplication is needed for a single matrix
+    for (int i = 1; i < n; i++) {
+        m[i][i] = 0;
+    }
+
+    // L is the chain length
+    for (int L = 2; L < n; L++) {  // L is the length of the chain
+        for (int i = 1; i <= n - L; i++) {
+            int j = i + L - 1;
+            m[i][j] = INT_MAX;  // Set the number of multiplications to infinity initially
+
+            for (int k = i; k <= j - 1; k++) {
+                // Calculate cost of scalar multiplications
+                int q = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];
+                
+                if (q < m[i][j]) {
+                    m[i][j] = q;  // Update the minimum cost
+                }
+            }
+        }
+    }
+
+    // Return the minimum number of scalar multiplications to multiply matrices from 1 to n-1
+    return m[1][n - 1];
+}
+
+int main() {
+    printf("Name: Mahmadbnaim Kadivar\n");
+    printf("Enrollment no.: 92310103056\n");
+
+    int n;
+
+    // Read the number of matrices (n-1 matrices for a chain)
+    printf("Enter the number of matrices:=> ");
+    scanf("%d", &n);
+
+    int p[n + 1];
+
+    // Read the dimensions of matrices
+    printf("Enter the dimensions of matrices (p[0] to p[n]):\n");
+    for (int i = 0; i <= n; i++) {
+        printf("Dimension p[%d]: ", i);
+        scanf("%d", &p[i]);
+    }
+
+    // Call the matrix chain multiplication function
+    int minMultiplications = matrixChainOrder(p, n + 1);
+
+    // Output the result
+    printf("Minimum number of scalar multiplications is: %d\n", minMultiplications);
+
+    return 0;
+}
