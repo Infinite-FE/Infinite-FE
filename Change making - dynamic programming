@@ -1,0 +1,45 @@
+#include <stdio.h>
+
+// Function to perform the greedy approach for the Change Making problem
+void findMinCoins(int coins[], int n, int amount) {
+    printf("The minimum number of coins to make the amount %d is:\n", amount);
+    
+    for (int i = 0; i < n; i++) {
+        // Count how many coins of coins[i] are needed
+        if (amount >= coins[i]) {
+            int count = amount / coins[i];
+            amount = amount % coins[i];
+            printf("%d coin(s) of denomination %d\n", count, coins[i]);
+        }
+    }
+
+    // If there's any remaining amount that couldn't be matched by the coins
+    if (amount > 0) {
+        printf("Remaining amount that cannot be represented with the available denominations: %d\n", amount);
+    }
+}
+
+int main() {
+    printf("Name: your name\n");
+    printf("Enrollment no.: your roll no.\n");
+
+    int n, amount;
+
+    printf("Enter the number of denominations:=> ");
+    scanf("%d", &n);
+
+    int coins[n];
+    printf("Enter the available denominations (in descending order):\n");
+    for (int i = 0; i < n; i++) {
+        printf("Coin %d: ", i + 1);
+        scanf("%d", &coins[i]);
+    }
+
+    printf("Enter the amount for which change is needed:=> ");
+    scanf("%d", &amount);
+
+    // Perform change making using greedy method
+    findMinCoins(coins, n, amount);
+
+    return 0;
+}
