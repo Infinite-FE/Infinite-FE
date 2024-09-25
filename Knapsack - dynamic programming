@@ -1,0 +1,58 @@
+#include <stdio.h>
+
+// Function to implement the 0/1 Knapsack problem using dynamic programming
+int knapsackDP(int W, int wt[], int val[], int n) {
+    int i, w;
+    int dp[n + 1][W + 1];  // Create a 2D DP table
+
+    // Build table dp[][] in a bottom-up manner
+    for (i = 0; i <= n; i++) {
+        for (w = 0; w <= W; w++) {
+            if (i == 0 || w == 0) {
+                dp[i][w] = 0;  // Base case: no items or 0 capacity
+            } else if (wt[i - 1] <= w) {
+                // Include the item or exclude it, whichever yields more value
+                dp[i][w] = (val[i - 1] + dp[i - 1][w - wt[i - 1]] > dp[i - 1][w])
+                               ? val[i - 1] + dp[i - 1][w - wt[i - 1]]
+                               : dp[i - 1][w];
+            } else {
+                // If the weight of the current item exceeds the current capacity
+                dp[i][w] = dp[i - 1][w];
+            }
+        }
+    }
+
+    // dp[n][W] will contain the maximum value that can be obtained with the given capacity
+    return dp[n][W];
+}
+
+int main() {
+    printf("Name: your name\n");
+    printf("Enrollment no.: your roll no.\n");
+
+    int n, W;
+
+    // Read number of items
+    printf("Enter the number of items:=> ");
+    scanf("%d", &n);
+
+    int val[n], wt[n];
+
+    // Read the values and weights of each item
+    for (int i = 0; i < n; i++) {
+        printf("Enter value and weight of item %d: ", i + 1);
+        scanf("%d %d", &val[i], &wt[i]);
+    }
+
+    // Read the capacity of the knapsack
+    printf("Enter the capacity of the knapsack:=> ");
+    scanf("%d", &W);
+
+    // Call the dynamic programming solution for the knapsack problem
+    int maxValue = knapsackDP(W, wt, val, n);
+
+    // Output the result
+    printf("Maximum value in the knapsack: %d\n", maxValue);
+
+    return 0;
+}
