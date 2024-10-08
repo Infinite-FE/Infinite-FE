@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100
+
+// Structure to represent an edge
+typedef struct {
+    int u, v, weight;
+} Edge;
+
+// Comparison function for sorting edges based on their weights
+int compareEdges(const void *a, const void *b) {
+    return ((Edge *)a)->weight - ((Edge *)b)->weight;
+}
+
+// Function to find the parent of a node (for union-find)
+int find(int parent[], int i) {
+    if (parent[i] == -1) {
+        return i;
+    }
+    return find(parent, parent[i]);
+}
+
+// Function to perform union of two subsets
+void unionSets(int parent[], int x, int y) {
+    int xset = find(parent, x);
+    int yset = find(parent, y);
+    parent[xset] = yset;
+}
+
+// Function to implement Kruskal's algorithm
+void kruskalMST(Edge edges[], int vertices, int edgesCount) {
+    // Sort edges based on weight
+    qsort(edges, edgesCount, sizeof(edges[0]), compareEdges);
+
+    int parent[MAX];
+    for (int i = 0; i < vertices; i++) {
+        parent[i] = -1; // Initially, all vertices are in their own set
+    }
+
+    printf("Edge\tWeight\n");
+    int mstWeight = 0;
+
+    // Iterate through the sorted edges
+    for (int i = 0; i < edgesCount; i++) {
+        int u = edges[i].u;
+        int v = edges[i].v;
+        int weight = edges[i].weight;
+
+        // Check if including this edge would form a cycle
+        if (find(parent, u) != find(parent, v)) {
+            printf("%d - %d\t%d\n", u, v, weight);
+            unionSets(parent, u, v);
+            mstWeight += weight; // Add weight to total MST weight
+        }
+    }
+
+    printf("Total weight of MST: %d\n", mstWeight);
+}
+
+int main() {
+    printf("Name: Your Name\n");
+    printf("Enrollment no.: Your roll no\n");
+
+    int vertices, edgesCount;
+
+    // Read number of vertices and edges
+    printf("Enter the number of vertices: ");
+    scanf("%d", &vertices);
+
+    printf("Enter the number of edges: ");
+    scanf("%d", &edgesCount);
+
+    Edge edges[edgesCount];
+
+    // Read edges and weights
+    printf("Enter the edges (u, v, weight) where u and v are vertices (0-indexed):\n");
+    for (int i = 0; i < edgesCount; i++) {
+        printf("Edge %d: ", i + 1);
+        scanf("%d %d %d", &edges[i].u, &edges[i].v, &edges[i].weight);
+    }
+
+    // Call Kruskal's algorithm to find the MST
+    kruskalMST(edges, vertices, edgesCount);
+
+    return 0;
+}
