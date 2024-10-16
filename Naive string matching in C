@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <string.h>
+
+// Function to implement the Naive String Matching Algorithm
+void naiveStringMatch(char text[], char pattern[]) {
+    int textLength = strlen(text);
+    int patternLength = strlen(pattern);
+    int found = 0;
+
+    // Loop through the text to check for the pattern
+    for (int i = 0; i <= textLength - patternLength; i++) {
+        int j;
+        // Check if the pattern matches the text at this position
+        for (j = 0; j < patternLength; j++) {
+            if (text[i + j] != pattern[j]) {
+                break;
+            }
+        }
+
+        // If pattern is found, print the index
+        if (j == patternLength) {
+            printf("Pattern found at index %d\n", i);
+            found = 1;
+        }
+    }
+
+    // If pattern is not found in the entire text
+    if (!found) {
+        printf("Pattern not found in the text.\n");
+    }
+}
+
+int main() {
+    printf("Name: Your Name.\n");
+    printf("Enrollment no.: your Roll no.\n");
+
+    char text[100], pattern[100];
+
+    // User input for text
+    printf("Enter the text: ");
+    fgets(text, sizeof(text), stdin);
+    text[strcspn(text, "\n")] = '\0';  // Remove newline character if present
+
+    // User input for pattern
+    printf("Enter the pattern to search: ");
+    fgets(pattern, sizeof(pattern), stdin);
+    pattern[strcspn(pattern, "\n")] = '\0';  // Remove newline character if present
+
+    // Call the Naive String Matching function
+    naiveStringMatch(text, pattern);
+
+    return 0;
+}
