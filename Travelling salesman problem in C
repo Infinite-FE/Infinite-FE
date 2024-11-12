@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <limits.h>
+
+#define MAX 10
+
+// Function to find the minimum cost path for TSP using brute-force
+int tsp(int graph[MAX][MAX], int visited[], int pos, int n, int count, int cost, int *minCost) {
+    // If all vertices are visited and we return to the starting vertex
+    if (count == n && graph[pos][0]) {
+        *minCost = (cost + graph[pos][0] < *minCost) ? cost + graph[pos][0] : *minCost;
+        return *minCost;
+    }
+
+    // Try to go to the next unvisited city
+    for (int i = 0; i < n; i++) {
+        if (!visited[i] && graph[pos][i]) {
+            // Mark as visited and recurse
+            visited[i] = 1;
+            tsp(graph, visited, i, n, count + 1, cost + graph[pos][i], minCost);
+            visited[i] = 0; // Backtrack
+        }
+    }
+    return *minCost;
+}
+
+int main() {
+    printf("Name: Mahmadnaim Kadivar\n");
+    printf("Enrollment no.: 92310103056\n");
+
+    int n, graph[MAX][MAX];
+
+    // Read number of cities
+    printf("Enter the number of cities: ");
+    scanf("%d", &n);
+
+    if (n > MAX) {
+        printf("Number of cities exceeds the maximum allowed (%d).\n", MAX);
+        return 1;
+    }
+
+    // Read the adjacency matrix
+    printf("Enter the distance matrix (enter 0 if no direct path):\n");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            printf("Distance from city %d to city %d: ", i, j);
+            scanf("%d", &graph[i][j]);
+        }
+    }
+
+    // Array to keep track of visited cities
+    int visited[MAX] = {0};
+    visited[0] = 1; // Start from the first city
+
+    int minCost = INT_MAX;
+
+    // Call the TSP function starting from the first city
+    tsp(graph, visited, 0, n, 1, 0, &minCost);
+
+    // Output the minimum cost
+    printf("Minimum cost of visiting all cities: %d\n", minCost);
+
+    return 0;
+}
